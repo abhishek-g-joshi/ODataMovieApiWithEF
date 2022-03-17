@@ -6,6 +6,8 @@ namespace ODataMovieApiWithEF.EFCore
     public class MovieAppDbContext : DbContext
     {
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Person> Person { get; set; }
+       
 
         public MovieAppDbContext(DbContextOptions<MovieAppDbContext> options) : base(options)
         {

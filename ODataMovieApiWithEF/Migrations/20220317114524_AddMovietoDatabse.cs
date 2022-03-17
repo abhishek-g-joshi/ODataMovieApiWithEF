@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ODataMovieApiWithEF.Migrations
 {
     /// <inheritdoc />
-    public partial class AddMoviesToDb : Migration
+    public partial class AddMovietoDatabse : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,14 +15,14 @@ namespace ODataMovieApiWithEF.Migrations
                 name: "Person",
                 columns: table => new
                 {
-                    Pid = table.Column<int>(type: "int", nullable: false)
+                    PId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Person", x => x.Pid);
+                    table.PrimaryKey("PK_Person", x => x.PId);
                 });
 
             migrationBuilder.CreateTable(
@@ -34,22 +34,23 @@ namespace ODataMovieApiWithEF.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Genre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DirectorPid = table.Column<int>(type: "int", nullable: true)
+                    PId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Movies_Person_DirectorPid",
-                        column: x => x.DirectorPid,
+                        name: "FK_Movies_Person_PId",
+                        column: x => x.PId,
                         principalTable: "Person",
-                        principalColumn: "Pid");
+                        principalColumn: "PId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Movies_DirectorPid",
+                name: "IX_Movies_PId",
                 table: "Movies",
-                column: "DirectorPid");
+                column: "PId");
         }
 
         /// <inheritdoc />
