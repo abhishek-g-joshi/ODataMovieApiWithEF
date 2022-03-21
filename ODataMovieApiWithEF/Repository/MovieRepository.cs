@@ -1,4 +1,5 @@
-﻿using ODataMovieApiWithEF.EFCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ODataMovieApiWithEF.EFCore;
 using ODataMovieApiWithEF.Models;
 
 namespace ODataMovieApiWithEF.Repository
@@ -19,7 +20,8 @@ namespace ODataMovieApiWithEF.Repository
 
         public bool DeleteMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            _db.Movies.Remove(movie);
+            return Save();
         }
 
         public IQueryable<Movie> GetMovies()
@@ -35,7 +37,8 @@ namespace ODataMovieApiWithEF.Repository
 
         public bool UpdateMovie(Movie movie)
         {
-            throw new NotImplementedException();
+            _db.Movies.Update(movie);
+            return Save();
         }
         
         public bool MovieExists(int id)
@@ -45,7 +48,7 @@ namespace ODataMovieApiWithEF.Repository
 
         public Movie GetMovie(int id)
         {
-            throw new NotImplementedException();
+            return _db.Movies.FirstOrDefault(x => x.Id == id);
         }
 
         public bool MovieExists(string title)

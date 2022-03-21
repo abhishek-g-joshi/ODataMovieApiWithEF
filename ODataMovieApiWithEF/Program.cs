@@ -12,7 +12,7 @@ static IEdmModel GetEdmModel()
 {
     ODataConventionModelBuilder builder1 = new ODataConventionModelBuilder();
     builder1.EntitySet<Movie>("Movies");
-    builder1.EntitySet<Person>("People");
+    builder1.EntitySet<Person>("Person");
     var edmModel = builder1.GetEdmModel();
     return edmModel;
 }
@@ -23,6 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MovieAppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers().AddOData(opt => opt.AddRouteComponents("v1",GetEdmModel()));
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IPersonRepositroy, PersonRepositroy>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

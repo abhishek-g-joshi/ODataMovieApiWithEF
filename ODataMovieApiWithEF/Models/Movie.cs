@@ -5,7 +5,7 @@ namespace ODataMovieApiWithEF.Models
 {
     public class Movie
     {
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int Id { get; set; }
 
@@ -17,11 +17,9 @@ namespace ODataMovieApiWithEF.Models
 
         public DateTime? ReleaseDate { get; set; }
 
-        [Required]
-        public int PId { get; set; }
+       
 
-        [ForeignKey("PId")]
-        public Person? Director { get; set; }
+        public string? Diector { get; set; } 
 
 
 

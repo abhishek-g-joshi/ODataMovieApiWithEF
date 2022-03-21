@@ -5,9 +5,9 @@ namespace ODataMovieApiWithEF.Models
 {
     public class Person
     {
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
-        public int PId { get; set; }
+        public int Id { get; set; }
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

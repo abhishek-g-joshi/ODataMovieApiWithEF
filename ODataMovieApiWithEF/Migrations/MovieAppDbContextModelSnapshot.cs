@@ -25,17 +25,14 @@ namespace ODataMovieApiWithEF.Migrations
             modelBuilder.Entity("ODataMovieApiWithEF.Models.Movie", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Diector")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Genre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("datetime2");
@@ -46,18 +43,13 @@ namespace ODataMovieApiWithEF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PId");
-
                     b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("ODataMovieApiWithEF.Models.Person", b =>
                 {
-                    b.Property<int>("PId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("Id")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PId"), 1L, 1);
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -67,20 +59,9 @@ namespace ODataMovieApiWithEF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PId");
+                    b.HasKey("Id");
 
                     b.ToTable("Person");
-                });
-
-            modelBuilder.Entity("ODataMovieApiWithEF.Models.Movie", b =>
-                {
-                    b.HasOne("ODataMovieApiWithEF.Models.Person", "Director")
-                        .WithMany()
-                        .HasForeignKey("PId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Director");
                 });
 #pragma warning restore 612, 618
         }

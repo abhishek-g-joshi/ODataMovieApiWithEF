@@ -34,7 +34,7 @@ namespace ODataMovieApiWithEF.Repository
 
         public bool PersonExists(int id)
         {
-            return _db.Person.Any(x => x.PId == id);
+            return _db.Person.Any(x => x.Id == id);
         }
 
         public bool PersonExists(string name)
