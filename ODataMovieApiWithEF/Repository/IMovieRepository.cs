@@ -16,7 +16,7 @@ namespace ODataMovieApiWithEF.Repository
 
         bool UpdateMovie(Movie movie);
 
-        bool DeleteMovie(Movie movie);
+        bool  DeleteMovie(Movie movie);
 
         bool Save();
     }

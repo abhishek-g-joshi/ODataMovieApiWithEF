@@ -18,7 +18,7 @@ namespace ODataMovieApiWithEF.Repository
             return Save();
         }
 
-        public bool DeleteMovie(Movie movie)
+        public  bool DeleteMovie(Movie movie)
         {
             _db.Movies.Remove(movie);
             return Save();

@@ -20,8 +20,10 @@ static IEdmModel GetEdmModel()
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+#pragma warning disable CS8604 // Possible null reference argument.
 builder.Services.AddDbContext<MovieAppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddControllers().AddOData(opt => opt.AddRouteComponents("v1",GetEdmModel()));
+#pragma warning restore CS8604 // Possible null reference argument.
+builder.Services.AddControllers().AddOData(opt => opt.AddRouteComponents("v1",GetEdmModel()).Filter().Select().Expand().OrderBy());
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IPersonRepositroy, PersonRepositroy>();
 
