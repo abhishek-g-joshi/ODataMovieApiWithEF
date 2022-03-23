@@ -9,9 +9,7 @@ namespace ODataMovieApiWithEF.Controllers
 {
     /*[Route("api/[controller]")]
     [ApiController]*/
-    public class MoviesController : ODataController
-    {
-        private readonly IMovieRepository _movieRepo;
+   private readonly IMovieRepository _movieRepo;
         public MoviesController(IMovieRepository movieRepo)
         {
             _movieRepo = movieRepo;
@@ -27,10 +25,38 @@ namespace ODataMovieApiWithEF.Controllers
         }
 
         /// <summary>
+        /// Get individual Movie
+        /// </summary>
+        /// <param name="movieId">The Id of the movie</param>
+        /// <returns></returns>
+      
+        [HttpGet(nameof(GetById))]
+        [ProducesResponseType(200, Type = typeof(Movie))]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
+        [EnableQuery]
+        //[ODataRoute("{movieId}")]
+        public IActionResult GetById(int movieId)
+        {
+            var obj = _movieRepo.GetMovie(movieId);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(obj);
+        }
+
+        /// <summary>
         /// Create a new movie
         /// </summary>
+        [ProducesResponseType(201, Type = typeof(Movie))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [EnableQuery]
-        public async Task<IActionResult> Post([FromBody] Movie movie)
+        public IActionResult Post([FromBody] Movie movie)
         {
             if (movie == null)
                 return BadRequest(ModelState);
@@ -55,8 +81,11 @@ namespace ODataMovieApiWithEF.Controllers
         /// </summary>
         /// <return></return>
         [EnableQuery]
-        [HttpPut("{movieId:int}")]
-        public IActionResult Update(int movieId, [FromBody] Movie movie)
+        [ODataRoute]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Patch([FromODataUri] int movieId, [FromBody] Movie movie)
         {
             if (movie == null || movieId != movie.Id)
                 return BadRequest(ModelState);
@@ -67,23 +96,35 @@ namespace ODataMovieApiWithEF.Controllers
                 return StatusCode(500, ModelState);
             }
 
-            return NoContent();
+            return Ok();
         }
+
 
         /// <summary>
         /// Update a movie
         /// </summary>
-        /// <return></return>
-        [EnableQuery]
+        /// <return></return> 
         [HttpDelete("{movieId:int}")]
-        public IActionResult Delete(int movieId, [FromBody] Movie movie)
-        {
-            if (movie == null || movieId != movie.Id)
-                return BadRequest(ModelState);
+        [EnableQuery]
+       // [ODataRoute()]
+       // [ODataRoute("v1/Movies({movieId:int})")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-            if (!_movieRepo.DeleteMovie(movie))
+        public IActionResult Delete(int movieId)
+        {
+            if (!_movieRepo.MovieExists(movieId))
             {
-                ModelState.AddModelError("", $"Something went wrong while deleting movie : {movie.Title}");
+                return NotFound();
+            }
+
+            var movieobj = _movieRepo.GetMovie(movieId);
+
+            if (!_movieRepo.DeleteMovie(movieobj))
+            {
+                ModelState.AddModelError("", $"Something went wrong while deleting movie : {movieobj.Title}");
                 return StatusCode(500, ModelState);
             }
 
